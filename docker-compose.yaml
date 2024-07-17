@@ -304,5 +304,20 @@ services:
     ports:
       - "5001:5001"
 
+  mysql:
+    image: mysql:8.0.31
+    container_name: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: file_transfer
+    ports:
+      - 3306:3306
+    volumes:
+      - mysql:/var/lib/mysql
+    restart: unless-stopped
+
 volumes:
   postgres-db-volume:
+  mysql:
