@@ -5,7 +5,7 @@
   },
   "tasks": [
     {
-      "task_id": "fetch_data",
+      "task_id": "source",
       "operator": "PostgresOperatorTemplate",
       "params": {
         "postgres_conn_id": "postgres_conn",
@@ -13,7 +13,7 @@
       }
     },
     {
-      "task_id": "process_data",
+      "task_id": "transform",
       "operator": "PostgresOperatorTemplate",
       "params": {
         "postgres_conn_id": "postgres_conn",
@@ -21,7 +21,7 @@
       }
     },
     {
-      "task_id": "store_data",
+      "task_id": "destination",
       "operator": "PostgresOperatorTemplate",
       "params": {
         "postgres_conn_id": "postgres_conn",
@@ -30,7 +30,7 @@
     }
   ],
   "dependencies": [
-    ["fetch_data", "process_data"],
-    ["process_data", "store_data"]
+    ["source", "transform"],
+    ["transform", "destination"]
   ]
 }

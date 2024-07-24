@@ -93,7 +93,7 @@ task_dict['{upstream_task_id}'] >> task_dict['{downstream_task_id}']
 script_directory = os.path.dirname(os.path.abspath(__file__)) # for relative path use os.path.relpath 
 
 # Path to the file
-json_input_data = os.path.join(script_directory, 'config/config.json') # This will change to pick up json_input during runtime
+json_input_data = os.path.join(script_directory, 'config/input_data.json') # This will change to pick up json_input during runtime
 output_dir = os.path.join(script_directory, 'dags/')
 
 # Generate the DAG file dynamically
