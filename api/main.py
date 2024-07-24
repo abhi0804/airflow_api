@@ -3,7 +3,7 @@ import subprocess
 import json
 import docker
 import logging
-from call_functions import add_conn , update_conn, delete_conn
+from call_functions import add_conn, update_conn, delete_conn
 
 logger = logging.getLogger(__name__)
 
@@ -16,9 +16,11 @@ conn_mapping = {
     'DELETE': delete_conn
 }
 
+
 @app.route("/")
 def hello_world():
     return "<h1>Hello, World!</h1>"
+
 
 @app.route("/connection", methods=['POST', 'PUT', 'DELETE'])
 def connection():
@@ -35,10 +37,9 @@ def connection():
     call_func = conn_mapping.get(request_type)
 
     # Call the function
-    func_response = call_func(data,container)
+    func_response = call_func(data, container)
 
     return func_response, 201
-
 
 
 if __name__ == "__main__":
