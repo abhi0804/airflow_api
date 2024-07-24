@@ -1,0 +1,36 @@
+{
+  "dag_params": {
+    "dag_id": "dynamic_dag_generation_test",
+    "schedule_interval": "@daily"
+  },
+  "tasks": [
+    {
+      "task_id": "fetch_data",
+      "operator": "PostgresOperatorTemplate",
+      "params": {
+        "postgres_conn_id": "postgres_conn",
+        "sql": "SELECT 1"
+      }
+    },
+    {
+      "task_id": "process_data",
+      "operator": "PostgresOperatorTemplate",
+      "params": {
+        "postgres_conn_id": "postgres_conn",
+        "sql": "SELECT 2"
+      }
+    },
+    {
+      "task_id": "store_data",
+      "operator": "PostgresOperatorTemplate",
+      "params": {
+        "postgres_conn_id": "postgres_conn",
+        "sql": "SELECT 3"
+      }
+    }
+  ],
+  "dependencies": [
+    ["fetch_data", "process_data"],
+    ["process_data", "store_data"]
+  ]
+}

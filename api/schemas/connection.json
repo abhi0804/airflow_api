@@ -1,0 +1,9 @@
+{
+    "conn_id": "conn_id",
+    "conn_type": "mysql",
+    "host": "mysql",
+    "port": "3306",
+    "login": "root",
+    "password": "password",
+    "schema": "file_transfer"
+}

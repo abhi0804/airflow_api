@@ -14,6 +14,6 @@ connection = json.loads("""{
 }""")
 session = Session()
 
-    # Create new Airflow connection
+# Create new Airflow connection
 conn_exists = session.query(Connection).filter(Connection.conn_id == connection['conn_id']).first()
 print(conn_exists)
