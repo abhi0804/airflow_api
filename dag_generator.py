@@ -32,6 +32,7 @@ def generate_dag_file(json_input_data, output_dir):
     dag_file_content = f"""
 from airflow import DAG
 from airflow.utils.dates import days_ago
+from postgresoperatortemplate import PostgresOperatorTemplate
 
 default_args = {{
     'owner': 'airflow',
@@ -61,12 +62,13 @@ task_dict = {{}}
         # Convert params to kwargs format
         params_str = ', '.join([f"{key}='{value}'" for key, value in params.items()])
 
-        operator_class = load_operator(f"plugins.{operator.lower()}", operator)
-        
+        #operator_class = load_operator(f"plugins.{operator.lower()}", operator)
+
+
         # Generate tasks for dag
         # Indentation to the left is necessary. DO NOT CHANGE THE FORMAT
         dag_file_content += f"""
-task_dict['{task_id}'] = {operator_class}(task_id='{task_id}', {params_str}, dag=dag)
+task_dict['{task_id}'] = {operator}(task_id='{task_id}', {params_str}, dag=dag)
                             """
 
     # Generate task dependencies
