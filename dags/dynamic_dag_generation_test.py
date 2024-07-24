@@ -1,6 +1,7 @@
 
 from airflow import DAG
 from airflow.utils.dates import days_ago
+from postgresoperatortemplate import PostgresOperatorTemplate
 
 default_args = {
     'owner': 'airflow',
@@ -20,13 +21,13 @@ dag = DAG(
 task_dict = {}
 
                         
-task_dict['fetch_data'] = <class 'plugins.postgresoperatortemplate.PostgresOperatorTemplate'>(task_id='fetch_data', postgres_conn_id='postgres_conn', sql='SELECT 1', dag=dag)
+task_dict['source'] = PostgresOperatorTemplate(task_id='source', postgres_conn_id='postgres_conn', sql='SELECT 1', dag=dag)
                             
-task_dict['process_data'] = <class 'plugins.postgresoperatortemplate.PostgresOperatorTemplate'>(task_id='process_data', postgres_conn_id='postgres_conn', sql='SELECT 2', dag=dag)
+task_dict['transform'] = PostgresOperatorTemplate(task_id='transform', postgres_conn_id='postgres_conn', sql='SELECT 2', dag=dag)
                             
-task_dict['store_data'] = <class 'plugins.postgresoperatortemplate.PostgresOperatorTemplate'>(task_id='store_data', postgres_conn_id='postgres_conn', sql='SELECT 3', dag=dag)
+task_dict['destination'] = PostgresOperatorTemplate(task_id='destination', postgres_conn_id='postgres_conn', sql='SELECT 3', dag=dag)
                             
-task_dict['fetch_data'] >> task_dict['process_data']
+task_dict['source'] >> task_dict['transform']
                             
-task_dict['process_data'] >> task_dict['store_data']
+task_dict['transform'] >> task_dict['destination']
                             
