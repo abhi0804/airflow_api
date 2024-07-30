@@ -1,7 +1,8 @@
 
 from airflow import DAG
 from airflow.utils.dates import days_ago
-from postgresoperatortemplate import PostgresOperatorTemplate
+from custom_operators.postgresoperatortemplate import *  # Need to make this dynamic
+
 
 default_args = {
     'owner': 'airflow',
