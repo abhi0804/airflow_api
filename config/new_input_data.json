@@ -1,0 +1,89 @@
+{
+    "dag_id": "example_dynamic_dag_with_custom_operators_test2",
+    "default_args": {
+      "owner": "airflow",
+      "start_date": "2024-01-01",
+      "retries": 1
+    },
+    "jobs": [
+      {
+        "job_id": "job_1",
+        "tasks": [
+          {
+            "task_id": "extract_data",
+            "operator": "ExtractOperator",
+            "params": {
+              "conn_id": "postgres_default",
+              "sql": "SELECT * FROM table1",
+              "output_path": "/tmp/job1_extracted_data.parquet"
+            },
+            "dependencies": []
+          },
+          {
+            "task_id": "transform_data",
+            "operator": "TransformOperator",
+            "params": {
+              "input_path": "/tmp/job1_extracted_data.parquet",
+              "output_path": "/tmp/job1_transformed_data.parquet",
+              "transformations": {
+                "column1": "str_to_int",
+                "column2": "float_to_str"
+              }
+            },
+            "dependencies": ["extract_data"]
+          },
+          {
+            "task_id": "load_to_s3",
+            "operator": "LoadOperator",
+            "params": {
+              "input_path": "/tmp/job1_transformed_data.parquet",
+              "s3_bucket": "bucket1",
+              "s3_key": "job1/path/to/data.parquet"
+            },
+            "dependencies": ["transform_data"]
+          }
+        ],
+        "dependencies": []
+      },
+      {
+        "job_id": "job_2",
+        "tasks": [
+          {
+            "task_id": "extract_data",
+            "operator": "ExtractOperator",
+            "params": {
+              "conn_id": "postgres_default",
+              "sql": "SELECT * FROM table2",
+              "output_path": "/tmp/job2_extracted_data.parquet"
+            },
+            "dependencies": []
+          },
+          {
+            "task_id": "transform_data",
+            "operator": "TransformOperator",
+            "params": {
+              "input_path": "/tmp/job2_extracted_data.parquet",
+              "output_path": "/tmp/job2_transformed_data.parquet",
+              "transformations": {
+                "column1": "str_to_int",
+                "column2": "float_to_str"
+              }
+            },
+            "dependencies": ["extract_data"]
+          },
+          {
+            "task_id": "load_to_s3",
+            "operator": "LoadOperator",
+            "params": {
+              "input_path": "/tmp/job2_transformed_data.parquet",
+              "s3_bucket": "bucket2",
+              "s3_key": "job2/path/to/data.parquet"
+            },
+            "dependencies": ["transform_data"]
+          }
+        ],
+        "dependencies": ["job_1"]
+      }
+    ]
+  }
+  
